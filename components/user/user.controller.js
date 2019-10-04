@@ -1,7 +1,7 @@
 'use strict'
 
 var User = require('./user.model');
-var tokens = require('../../services/token-services');
+var tokens = require('../../services/token.service');
 
 function logIn(req, res) {
     tokens.getTokens(null, req);
@@ -9,5 +9,5 @@ function logIn(req, res) {
 }
 
 module.exports = {
-    logIn: logIn,
+    logIn,
 }

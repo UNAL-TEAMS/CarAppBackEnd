@@ -5,6 +5,6 @@ var userController = require('./user.controller');
 
 var api = express.Router();
 
-api.post('/logIn', userController.logIn);
+api.post('/log_in', userController.logIn);
 
 module.exports = api;
