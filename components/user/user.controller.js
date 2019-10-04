@@ -15,9 +15,9 @@ function logIn(req, res) {
     else {
         User.findOne({ email: req.body.email }, (err, user) => {
             if (err) errorHandler.mongoError(err, res, 'Error searching user in db');
-            else if (user.password != req.body.password) res.status(200).send({ ok: false, msg: 'Bad password' });
+            else if (!user) res.status(404).send('User no found');
+            else if (user.password != req.body.password) res.status(400).send('Bad password');
             else res.status(200).send({
-                ok: true,
                 msg: 'Correct password',
                 log_in_token: tokens.getLogInToken(user),
                 refresh_token: tokens.getRefreshToken(req, user)
