@@ -99,14 +99,14 @@ function addCar(req, res) {
  * @param {String} req.body.car_id - id del carro a eliminar (OBLIGATORIO)
  */
 function removeCar(req, res) {
-    if (!req.body.car_id) log.response(res, 400, log.ERR_CODES.MISSING_PARAMETER, 'The car_id is obligatory');
+    if (!req.body.car_id) res.status(400).send('The car_id is obligatory');
     else User.findByIdAndUpdate(req.token_user._id, { $pull: { cars: { _id: req.body.car_id } } }, (err, user) => {
-        if (err) log.logErrJSONAndResponse(res, 500, log.ERR_CODES.DATABASE_SEARCH_ERROR, 'Error searching user', err);
-        else if (!user) log.responseInfo(res, 404, log.ERR_CODES.USER_NO_FOUND, 'User not found');
+        if (err) res.status(500).send('Error searching user');
+        else if (!user) res.status(404).send('User not found');
         else {
             var removedCar = user.cars.find(car => car._id == req.body.car_id);
             if (removedCar.picture && fs.existsSync('./uploads/carPhotos/' + removedCar.picture)) fs.unlinkSync('./uploads/carPhotos/' + removedCar.picture);
-            log.responseInfo(res, 201, { removed_car: removedCar }, log.ERR_CODES.OK, 'Success');
+            res.status(201).send({removed_car: removedCar, info: 'Success'});
         }
     });
 }
@@ -146,4 +146,5 @@ module.exports = {
     createUser,
     addCar,
     uploadCarImg,
+    removeCar,
 }
