@@ -1,3 +1,4 @@
 ----GERMAN-----
 1) Testing TokenService & Autentication Middleware
 2) Testing logIn
+3) Change Pass verification with crypt algorithm
