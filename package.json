@@ -1,0 +1,21 @@
+{
+    "name": "carappbackend",
+    "version": "1.0.0",
+    "description": "Back End app CarApp",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "mongo": "cd \"C:/Program Files/MongoDB/Server/4.2/bin/\" && mongo",
+        "mongod": "cd \"C:/Program Files/MongoDB/Server/4.2/bin/\" && mongod"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/UNAL-TEAMS/CarAppBackEnd.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/UNAL-TEAMS/CarAppBackEnd/issues"
+    },
+    "homepage": "https://github.com/UNAL-TEAMS/CarAppBackEnd#readme"
+}
