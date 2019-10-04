@@ -6,6 +6,6 @@ var autenticationMiddleware = require('../middleware/autentication.middleware');
 
 var api = express.Router();
 
-api.get('/refresh_token', autenticationMiddleware.verifyRefreshToken, tokenService.updateLogInToken);
+api.get('/refresh_log_in_token', autenticationMiddleware.verifyRefreshToken, tokenService.updateLogInToken);
 
 module.exports = api;
