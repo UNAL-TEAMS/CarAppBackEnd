@@ -20,7 +20,10 @@ app.use((req, res, next) => {
 
 // cargar rutas
 
+var userRoutes = require('./components/user/user.routes');
 
 // rutas base
+
+app.use('/user', userRoutes);
 
 module.exports = app;
