@@ -10,7 +10,7 @@ var user = Schema({
     identification: Number,
     avatar: String,
     cars: [{
-        brand: String,
+        trade_mark: String,
         model: Number,
         lastSoatDate: Date,
         lastTecDate: Date, // male, female

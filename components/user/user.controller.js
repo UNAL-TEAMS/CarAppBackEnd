@@ -84,7 +84,7 @@ function createUser(req, res) {
  * */
 function addCar(req, res) {
 
-    if (!req.body.branch) res.status(400).send('The branch is obligatory');
+    if (!req.body.trade_mark) res.status(400).send('The trade_mark is obligatory');
     else if (!req.body.model) res.status(400).send('The model is obligatory');
     else if (!req.body.reference) res.status(400).send('The reference is obligatory');
     else if (!req.body.lastSoatDate) res.status(400).send('The lastSoatDate is obligatory');
@@ -93,7 +93,7 @@ function addCar(req, res) {
     else if (!req.body.current_kilometer) res.status(400).send('The current_kilometer is obligatory');
     else {
         var newCar = {};
-        newCar.branch = req.body.branch;
+        newCar.trade_mark = req.body.trade_mark;
         newCar.model = req.body.model;
         newCar.reference = req.body.reference;
         newCar.lastSoatDate = req.body.lastSoatDate;
