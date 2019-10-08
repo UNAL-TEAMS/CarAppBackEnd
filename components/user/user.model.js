@@ -10,14 +10,14 @@ var user = Schema({
     identification: Number,
     avatar: String,
     cars: [{
-        branch: String,
+        brand: String,
         model: Number,
         lastSoatDate: Date,
         lastTecDate: Date, // male, female
         reference: String,
         license_plate: String,
-        picture: String,    
-        currentKilometer: Number,    
+        picture: String,
+        currentKilometer: Number,
     }],
 });
 

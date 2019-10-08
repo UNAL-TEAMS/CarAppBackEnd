@@ -20,7 +20,7 @@ function logIn(req, res) {
         User.findOne({ email: req.body.email }, (err, user) => {
             if (err) errorHandler.mongoError(err, res, 'Error searching user in db');
             else if (!user) res.status(404).send('User no found');
-            else if (user.password != req.body.password) res.status(400).send('Bad password');
+            else if (user.password != cryptPassword(req.body.password)) res.status(400).send('Bad password');
             else res.status(200).send({
                 msg: 'Correct password',
                 log_in_token: tokens.getLogInToken(user),
@@ -44,12 +44,12 @@ function cryptPassword(password) {
  * */
 function createUser(req, res) {
     var diff;
-    if (!req.body.email)  res.status(400).send('The email is obligatory');
+    if (!req.body.email) res.status(400).send('The email is obligatory');
     else if (!req.body.name) res.status(400).send('The name is obligatory');
     else if (!req.body.password) res.status(400).send('The password is obligatory');
-    else if (!req.body.identification) res.status(400).send('The birthdate is obligatory');
+    else if (!req.body.identification) res.status(400).send('The identification is obligatory');
     //Verificando que el usuario sea único
-    else User.find({'email': req.body.email }, (err, docs) => {
+    else User.find({ 'email': req.body.email }, (err, docs) => {
         if (err) res.status(500).send('Error verifying email');
         else if (docs.length > 0) res.status(400).send('Not unique email');
         else {
@@ -58,13 +58,13 @@ function createUser(req, res) {
             newUser.email = req.body.email;
             newUser.name = req.body.name;
             //console.log(cryptPassword(req.body.password));
-            newUser.password = cryptPassword(req.body.password);    
+            newUser.password = cryptPassword(req.body.password);
             newUser.identification = req.body.identification;
             // Guardar Usuario
             newUser.save((err, userStored) => {
-                if (err)  res.status(500).send('Error saving user');
+                if (err) res.status(500).send('Error saving user');
                 else if (!userStored) res.status(500).send('Error saving user. User not stored');
-                else  res.status(201).send('User Saved');
+                else res.status(201).send('User Saved');
             });
         }
     });
@@ -88,7 +88,7 @@ function addCar(req, res) {
     else if (!req.body.model) res.status(400).send('The model is obligatory');
     else if (!req.body.reference) res.status(400).send('The reference is obligatory');
     else if (!req.body.lastSoatDate) res.status(400).send('The lastSoatDate is obligatory');
-    else if (!req.body.lastTecDate) res.status(400).send('The lastTecDate is obligatory');
+    //else if (!req.body.lastTecDate) res.status(400).send('The lastTecDate is obligatory');
     else if (!req.body.license_plate) res.status(400).send('The license_plate is obligatory');
     else if (!req.body.current_kilometer) res.status(400).send('The current_kilometer is obligatory');
     else {
@@ -97,14 +97,14 @@ function addCar(req, res) {
         newCar.model = req.body.model;
         newCar.reference = req.body.reference;
         newCar.lastSoatDate = req.body.lastSoatDate;
-        newCar.lastTecDate = req.body.lastTecDate;
+        if (req.body.lastTecDate) newCar.lastTecDate = req.body.lastTecDate;
         newCar.license_plate = req.body.license_plate;
         newCar.current_kilometer = req.body.current_kilometer;
 
-        User.findByIdAndUpdatee(req.token_user._id, { $push: { cars: newCar } }, { new: true }, (err, userUpdated) => {
+        User.findByIdAndUpdate(req.token_user._id, { $push: { cars: newCar } }, { new: true }, (err, userUpdated) => {
             if (err) res.status(500).send('Error adding car');
             else if (!userUpdated) res.status(404).send('Error adding bike. bike not added or user not found');
-            else res.status(201).send({info: userUpdated.cars[userUpdated.cars.length-1]._id,msg:'Success'});
+            else res.status(201).send({ info: userUpdated.cars[userUpdated.cars.length - 1]._id, msg: 'Success' });
         });
     }
 }
@@ -123,7 +123,7 @@ function removeCar(req, res) {
         else {
             var removedCar = user.cars.find(car => car._id == req.body.car_id);
             if (removedCar.picture && fs.existsSync('./uploads/carPhotos/' + removedCar.picture)) fs.unlinkSync('./uploads/carPhotos/' + removedCar.picture);
-            res.status(201).send({removed_car: removedCar, info: 'Success'});
+            res.status(201).send({ removed_car: removedCar, info: 'Success' });
         }
     });
 }
@@ -158,10 +158,21 @@ function uploadCarImg(req, res) {
         });
     });
 }
+
+/**
+ * @author German Guerrrero
+ * @description Permite obtener el usuario que mando el token
+ * @param {String} req.headers.authorization- El token del usuario logeado (OBLIGATORIO)
+ * */
+function getOwnUser(req, res) {
+    res.status(200).send(req.token_user);
+}
+
 module.exports = {
     logIn,
     createUser,
     addCar,
     uploadCarImg,
     removeCar,
+    getOwnUser,
 }
