@@ -1,0 +1,37 @@
+{
+    "name": "carappbackend",
+    "version": "1.0.0",
+    "description": "Back End app CarApp",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "nodemon index.js",
+        "mongo": " C: && cd \"C:/Program Files/MongoDB/Server/4.2/bin/\" && mongo",
+        "mongod": "C: && cd \"C:/Program Files/MongoDB/Server/4.2/bin/\" && mongod"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/UNAL-TEAMS/CarAppBackEnd.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/UNAL-TEAMS/CarAppBackEnd/issues"
+    },
+    "homepage": "https://github.com/UNAL-TEAMS/CarAppBackEnd#readme",
+    "dependencies": {
+        "body-parser": "^1.19.0",
+        "crypto": "^1.0.1",
+        "express": "^4.17.1",
+        "jwt-simple": "^0.5.6",
+        "moment": "^2.24.0",
+        "mongoose": "^5.7.3",
+        "node-image-hash": "^1.0.6",
+        "multer": "^1.4.2",
+        "nodemon": "^1.19.3"
+    }
+    "engines": {
+    	"node": "10.16.0",
+    	"npm": "6.7.0"
+    }
+}
