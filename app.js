@@ -27,6 +27,8 @@ var deviceRoutes = require('./components/device/device.routes');
 
 // rutas base
 
+app.get('/', (req, res) => res.status(200).send('CarApp backend'));
+
 app.use('/user', userRoutes);
 app.use('/service', serviceRoutes);
 app.use('/device', deviceRoutes);
