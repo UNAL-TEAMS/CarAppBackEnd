@@ -1,5 +1,7 @@
 'use strict'
 
+require('dotenv').config(); //For heroku 
+
 var mongoose = require('mongoose');
 var port = process.env.PORT || 12345;
 var app = require('./app');
