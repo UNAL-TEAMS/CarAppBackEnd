@@ -2,7 +2,7 @@
 
 var app = require('express')();
 var bodyParser = require('body-parser');
-
+var cors = require('cors');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -18,6 +18,8 @@ app.use((req, res, next) => {
 
     next();
 });
+
+app.use(cors({ origin: true, credentials: true }));
 
 // cargar rutas
 
