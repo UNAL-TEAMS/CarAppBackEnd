@@ -23,10 +23,12 @@ app.use((req, res, next) => {
 
 var userRoutes = require('./components/user/user.routes');
 var serviceRoutes = require('./services/services.routes');
+var deviceRoutes = require('./components/device/device.routes');
 
 // rutas base
 
 app.use('/user', userRoutes);
 app.use('/service', serviceRoutes);
+app.use('/device', deviceRoutes);
 
 module.exports = app;
