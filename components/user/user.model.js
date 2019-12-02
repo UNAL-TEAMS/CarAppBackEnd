@@ -17,7 +17,10 @@ var user = Schema({
         reference: String,
         license_plate: String,
         picture: String,
-        currentKilometer: Number,
+        currentKilometer: {
+            type: Number,
+            default: 0,
+        },
         last5krev: Number,
     }],
 });
