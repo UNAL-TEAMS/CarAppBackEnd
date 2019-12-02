@@ -2,7 +2,7 @@
 
 var app = require('express')();
 var bodyParser = require('body-parser');
-
+var cors = require('cors');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -19,6 +19,8 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(cors({ origin: true, credentials: true }));
+
 // cargar rutas
 
 var userRoutes = require('./components/user/user.routes');
@@ -26,6 +28,8 @@ var serviceRoutes = require('./services/services.routes');
 var deviceRoutes = require('./components/device/device.routes');
 
 // rutas base
+
+app.get('/', (req, res) => res.status(200).send('CarApp backend'));
 
 app.use('/user', userRoutes);
 app.use('/service', serviceRoutes);
