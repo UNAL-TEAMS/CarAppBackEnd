@@ -23,8 +23,8 @@ function logIn(req, res) {
             else if (user.password != cryptPassword(req.body.password)) res.status(400).send('Bad password');
             else res.status(200).send({
                 msg: 'Correct password',
-                log_in_token: tokens.getLogInToken(user),
-                refresh_token: tokens.getRefreshToken(req, user)
+                log_in_token: tokens.getLogInToken(user._id),
+                refresh_token: tokens.getRefreshToken(req, user._id)
             });
         });
     }
@@ -150,7 +150,7 @@ function uploadCarImg(req, res) {
                 var updatedCar = userUpdated.cars.find(car => car._id == req.body.car_id);
                 if (updatedCar.picture && fs.existsSync('./uploads/carPhotos/' + updatedCar.picture)) fs.unlinkSync('./uploads/carPhotos/' + updatedCar.picture);
                 fs.writeFileSync('./uploads/carPhotos/' + fileName, req.file.buffer);
-                res.status(201).send({name_image: fileName,info:'Image Updated'});
+                res.status(201).send({ name_image: fileName, info: 'Image Updated' });
             }
         });
     });
@@ -173,7 +173,7 @@ function getOwnUser(req, res) {
  * @param {String} req.body.password - La contraseña nueva del usuario
  * @param {Number} req.body.identification - Numero de identificacion del usuario a crear (OBLIGATORIO)
  * */
-function modifyUser(req, res) {  
+function modifyUser(req, res) {
     if (req.body.name) req.token_user.name = req.body.name;
     if (req.body.password) req.token_user.password = req.body.password;
     if (req.body.identification) req.token_user.identification = req.body.identification;
@@ -193,7 +193,7 @@ function modifyUser(req, res) {
  * @param {Date} req.body.lastTecDate - Fecha en la que se vence la tecnomecanica
  * @param {Number} req.body.last5krev - Kilometraje en el que se hizo el cambio de aceite
  * */
-function modifyCar(req, res) {  
+function modifyCar(req, res) {
     if (!req.body.car_id) res.status(400).send('The car_id is obligatory');
     var selectedCar = req.token_user.cars.find(car => car._id == req.body.car_id)
     if (req.body.lastSoatDate) selectedCar.lastSoatDate = req.body.lastSoatDate;

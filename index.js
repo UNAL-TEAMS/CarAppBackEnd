@@ -7,8 +7,8 @@ var port = process.env.PORT || 12345;
 var app = require('./app');
 
 mongoose.connect(
-    'mongodb://localhost:27017/CarApp' // local
-    //'mongodb+srv://heroku:6P4MRLYvufeBThsW@cluster0-hcrty.mongodb.net/CarApp?retryWrites=true&w=majority' //heroku
+    //'mongodb://localhost:27017/CarApp' // local
+    'mongodb+srv://heroku:6P4MRLYvufeBThsW@cluster0-hcrty.mongodb.net/CarApp?retryWrites=true&w=majority' //heroku
     , { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
         if (err) {
             console.log('cant connect to database. Error: ');

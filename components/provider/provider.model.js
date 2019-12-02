@@ -3,6 +3,11 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var service = Schema({
+    has: Boolean,
+    description: String,
+});
+
 var provider = Schema({
     email: String,
     name: String,
@@ -10,9 +15,9 @@ var provider = Schema({
     NIT: Number,
     avatar: String,
     services: {
-        Soat: String,
-        RevTec: String,
-        Rev5k: String,
+        Soat: service,
+        RevTec: service,
+        Rev5k: service,
     },
 });
 
