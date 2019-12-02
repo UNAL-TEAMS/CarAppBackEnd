@@ -3,23 +3,17 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var user = Schema({
+var provider = Schema({
     email: String,
     name: String,
     password: String,
-    identification: Number,
+    NIT: Number,
     avatar: String,
-    cars: [{
-        trade_mark: String,
-        model: Number,
-        lastSoatDate: Date,
-        lastTecDate: Date, // male, female
-        reference: String,
-        license_plate: String,
-        picture: String,
-        currentKilometer: Number,
-        last5krev: Number,
-    }],
+    services: {
+        Soat: String,
+        RevTec: String,
+        Rev5k: String,
+    },
 });
 
-module.exports = mongoose.model('user', user);
+module.exports = mongoose.model('provider', provider);

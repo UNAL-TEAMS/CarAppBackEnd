@@ -1,6 +1,6 @@
 'use strict'
 
-var User = require('./user.model');
+var User = require('./provider.model');
 var tokens = require('../../services/token.service');
 var errorHandler = require('../error/error_handler');
 var moment = require('moment');

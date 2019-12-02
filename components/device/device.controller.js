@@ -5,6 +5,11 @@ function test(req, res) {
     console.log("Iegoooooo");
 }
 
+function km(req, res) {
+    res.status(200).send({ ok: 'ok' });
+    
+}
+
 module.exports = {
     test,
 }
