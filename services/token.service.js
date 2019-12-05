@@ -56,6 +56,7 @@ function decodeToken(token) {
 }
 
 function updateLogInToken(req, res) {
+    console.log('Update token. Type: ', req._user_type);
     if (req._user_type == USER_TYPES.USER) res.status(200).send(getLogInToken(req._id));
     else res.status(200).send(getLogInProviderToken(req._id));
 }
