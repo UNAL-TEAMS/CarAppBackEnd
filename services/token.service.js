@@ -34,7 +34,7 @@ function getLogInProviderToken(provider_id) {
     return jwt.encode(log_in_payload, secret);
 }
 
-function getRefreshToken(req, user_id) {
+function getRefreshToken(req, user_id, user_type) {
     var ip = req.connection.remoteAddress;
 
     var refresh_payload = {
@@ -42,6 +42,7 @@ function getRefreshToken(req, user_id) {
         ip: ip,
         type: TOKEN_TYPES.REFRESH,
         date: moment().toDate(),
+        user_type: user_type,
     };
 
     return jwt.encode(refresh_payload, secret);
@@ -56,7 +57,6 @@ function decodeToken(token) {
 }
 
 function updateLogInToken(req, res) {
-    console.log('Update token. Type: ', req._user_type);
     if (req._user_type == USER_TYPES.USER) res.status(200).send(getLogInToken(req._id));
     else res.status(200).send(getLogInProviderToken(req._id));
 }

@@ -24,7 +24,7 @@ function logIn(req, res) {
             else res.status(200).send({
                 msg: 'Correct password',
                 log_in_token: tokens.getLogInToken(user._id),
-                refresh_token: tokens.getRefreshToken(req, user._id)
+                refresh_token: tokens.getRefreshToken(req, user._id, tokens.USER_TYPES.USER),
             });
         });
     }
