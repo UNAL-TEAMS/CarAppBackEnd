@@ -64,7 +64,7 @@ function createUser(req, res) {
             newUser.save((err, userStored) => {
                 if (err) res.status(500).send('Error saving user');
                 else if (!userStored) res.status(500).send('Error saving user. User not stored');
-                else res.status(201).send('User Saved');
+                else res.status(200).send('User Saved');
             });
         }
     });
@@ -101,7 +101,7 @@ function addCar(req, res) {
         User.findByIdAndUpdate(req.token_user._id, { $push: { cars: newCar } }, { new: true }, (err, userUpdated) => {
             if (err) res.status(500).send('Error adding car');
             else if (!userUpdated) res.status(404).send('Error adding bike. bike not added or user not found');
-            else res.status(201).send({ info: userUpdated.cars[userUpdated.cars.length - 1]._id, msg: 'Success' });
+            else res.status(200).send({ info: userUpdated.cars[userUpdated.cars.length - 1]._id, msg: 'Success' });
         });
     }
 }
@@ -120,7 +120,7 @@ function removeCar(req, res) {
         else {
             var removedCar = user.cars.find(car => car._id == req.body.car_id);
             if (removedCar.picture && fs.existsSync('./uploads/carPhotos/' + removedCar.picture)) fs.unlinkSync('./uploads/carPhotos/' + removedCar.picture);
-            res.status(201).send({ removed_car: removedCar, info: 'Success' });
+            res.status(200).send({ removed_car: removedCar, info: 'Success' });
         }
     });
 }
@@ -150,7 +150,7 @@ function uploadCarImg(req, res) {
                 var updatedCar = userUpdated.cars.find(car => car._id == req.body.car_id);
                 if (updatedCar.picture && fs.existsSync('./uploads/carPhotos/' + updatedCar.picture)) fs.unlinkSync('./uploads/carPhotos/' + updatedCar.picture);
                 fs.writeFileSync('./uploads/carPhotos/' + fileName, req.file.buffer);
-                res.status(201).send({ name_image: fileName, info: 'Image Updated' });
+                res.status(200).send({ name_image: fileName, info: 'Image Updated' });
             }
         });
     });
@@ -177,7 +177,7 @@ function uploadUserImg(req, res) {
             else {
                 if (userUpdated.avatar && fs.existsSync('./uploads/userPhotos/' + userUpdated.avatar)) fs.unlinkSync('./uploads/userPhotos/' + userUpdated.avatar);
                 fs.writeFileSync('./uploads/userPhotos/' + fileName, req.file.buffer);
-                res.status(201).send({ name_image: fileName, info: 'Image Updated' });
+                res.status(200).send({ name_image: fileName, info: 'Image Updated' });
             }
         });
     });
@@ -207,7 +207,7 @@ function modifyUser(req, res) {
     req.token_user.save((err, savedUser) => {
         if (err) res.status(500).send('Error searching user');
         else if (!savedUser) res.status(404).send('User not found');
-        else res.status(201).send({ new_user: savedUser, info: 'Success' });
+        else res.status(200).send({ new_user: savedUser, info: 'Success' });
     })
 }
 
@@ -230,7 +230,7 @@ function modifyCar(req, res) {
     req.token_user.save((err, savedUser) => {
         if (err) res.status(500).send('Error searching user');
         else if (!savedUser) res.status(404).send('User not found');
-        else res.status(201).send({ new_user: savedUser, info: 'Success' });
+        else res.status(200).send({ new_user: savedUser, info: 'Success' });
     })
 }
 
