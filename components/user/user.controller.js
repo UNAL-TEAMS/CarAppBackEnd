@@ -7,7 +7,7 @@ var moment = require('moment');
 var imageHash = require('node-image-hash');
 var crypto = require('crypto');
 var fs = require('fs');
-
+var path = require('path');
 /**
  * 
  * @param {String} req.body.email - Email del usuario que hace logIn (Obligatorio)
@@ -157,6 +157,33 @@ function uploadCarImg(req, res) {
 }
 
 /**
+ * @author German Guerrero
+ * @description Permite subir una imagen como foto de perfil de un usuario
+ * @param {String} req.headers.authorization- El token del usuario logeado (OBLIGATORIO)
+ * @param {File} req.file - Archivo con la imagen de perfil (OBLIGATORIO)
+ * */
+function uploadUserImg(req, res) {
+    if (!req.file) res.status(400).send('The file is obligatory');
+    else imageHash.hash(req.file.buffer, 8).then((hash) => { // Hash file for name
+
+        var fileName = "" + req.file.originalname;
+        // FileName is hash plus time plus original file extension
+        fileName = hash.hash + moment.now() + '.' + fileName.split('.').pop();
+
+        User.findOneAndUpdate({ _id: req.token_user._id }, { avatar: fileName }, (err, userUpdated) => {
+
+            if (err) res.status(500).send('Error updating profile image', err);
+            else if (!userUpdated) res.status(404).send('User not found');
+            else {
+                if (userUpdated.avatar && fs.existsSync('./uploads/userPhotos/' + userUpdated.avatar)) fs.unlinkSync('./uploads/userPhotos/' + userUpdated.avatar);
+                fs.writeFileSync('./uploads/userPhotos/' + fileName, req.file.buffer);
+                res.status(201).send({ name_image: fileName, info: 'Image Updated' });
+            }
+        });
+    });
+}
+
+/**
  * @author German Guerrrero
  * @description Permite obtener el usuario que mando el token
  * @param {String} req.headers.authorization- El token del usuario logeado (OBLIGATORIO)
@@ -207,13 +234,42 @@ function modifyCar(req, res) {
     })
 }
 
+/**
+ * @author German Guerrero
+ * @description Envia la foto de vehiculo con el nombre especificado
+ * @param {String} req.params.file_name -  nombre de la imagen
+ */
+
+function getCarImg(req, res) {
+    if (!req.params.file_name) log.response(res, 400, log.ERR_CODES.MISSING_PARAMETER, 'The file_name is obligatory');
+    else res.sendFile(path.resolve('./uploads/carPhotos/' + req.params.file_name), {}, (err) => {
+        if (err) log.response(res, 404, log.ERR_CODES.INVALID_PARAMETER, 'File Not Found');
+    });
+}
+
+/**
+ * @author German Guerrero
+ * @description Envia la foto de vehiculo con el nombre especificado
+ * @param {String} req.params.file_name -  nombre de la imagen
+ */
+
+function getUserImg(req, res) {
+    if (!req.params.file_name) log.response(res, 400, log.ERR_CODES.MISSING_PARAMETER, 'The file_name is obligatory');
+    else res.sendFile(path.resolve('./uploads/userPhotos/' + req.params.file_name), {}, (err) => {
+        if (err) log.response(res, 404, log.ERR_CODES.INVALID_PARAMETER, 'File Not Found');
+    });
+}
+
 module.exports = {
     logIn,
     createUser,
     addCar,
     uploadCarImg,
+    uploadUserImg,
     removeCar,
     getOwnUser,
     modifyUser,
     modifyCar,
+    getCarImg,
+    getUserImg,
 }
