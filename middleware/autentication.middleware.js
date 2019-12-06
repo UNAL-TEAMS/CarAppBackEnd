@@ -20,7 +20,7 @@ function tokenlogInVerify(req, res, next) {
     generalverify(req, res, (token) => {
         if (token.user_type != token_service.USER_TYPES.USER) res.status(400).send('Not a user token');
         else if (token.type != token_service.TOKEN_TYPES.LOG_IN) res.status(400).send('Not a logIn token');
-        else if (moment().isAfter(token.dead_time)) res.status(400).send('Death token');
+        // else if (moment().isAfter(token.dead_time)) res.status(400).send('Death token');
         else User.findById(token.user_id, (err, user) => {
             if (err) errorHandler.mongoError(err, res, 'Error on logIn');
             else {
