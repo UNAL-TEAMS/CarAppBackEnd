@@ -14,7 +14,7 @@ var user = Schema({
         model: Number,
         lastSoatDate: Date,
         lastTecDate: Date,
-        last5K: Number,
+        last5krev: Number,
         reference: String,
         license_plate: String,
         picture: String,
@@ -22,7 +22,7 @@ var user = Schema({
             type: Number,
             default: 0,
         },
-        last5krev: Number,
+
     }],
 });
 

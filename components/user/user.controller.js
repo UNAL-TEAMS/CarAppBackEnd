@@ -90,7 +90,7 @@ function addCar(req, res) {
     else if (!req.body.lastSoatDate) res.status(400).send('The lastSoatDate is obligatory');
     else if (!req.body.license_plate) res.status(400).send('The license_plate is obligatory');
     //else if (!req.body.lastTecDate) res.status(400).send('The lastTecDate is obligatory');
-    //else if (!req.body.last5k) res.status(400).send('The last5k is obligatory');
+    //else if (!req.body.last5krev) res.status(400).send('The last5krev is obligatory');
     else {
         var newCar = {};
         newCar.trade_mark = req.body.trade_mark;
@@ -99,7 +99,7 @@ function addCar(req, res) {
         newCar.license_plate = req.body.license_plate;
         newCar.lastSoatDate = req.body.lastSoatDate;
         if (req.body.lastTecDate) newCar.lastTecDate = req.body.lastTecDate;
-        if (req.body.last5k) newCar.last5K = req.body.last5k;
+        if (req.body.last5krev) newCar.last5krev = req.body.last5krev;
 
         User.findByIdAndUpdate(req.token_user._id, { $push: { cars: newCar } }, { new: true }, (err, userUpdated) => {
             if (err) res.status(500).send('Error adding car');
