@@ -228,7 +228,7 @@ function modifyCar(req, res) {
     var selectedCar = req.token_user.cars.find(car => car._id == req.body.car_id)
     if (req.body.lastSoatDate) selectedCar.lastSoatDate = req.body.lastSoatDate;
     if (req.body.lastTecDate) selectedCar.lastTecDate = req.body.lastTecDate;
-    if (req.body.last5krev) selectedCar.last5k = req.body.last5krev;
+    if (req.body.last5krev) selectedCar.last5krev = req.body.last5krev;
 
     req.token_user.save((err, savedUser) => {
         if (err) res.status(500).send('Error searching user');
