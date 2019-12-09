@@ -13,7 +13,8 @@ var user = Schema({
         trade_mark: String,
         model: Number,
         lastSoatDate: Date,
-        lastTecDate: Date, // male, female
+        lastTecDate: Date,
+        last5K: Number,
         reference: String,
         license_plate: String,
         picture: String,

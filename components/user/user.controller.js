@@ -74,12 +74,13 @@ function createUser(req, res) {
  * @author Ivan Quiroga
  * @description Agrega un carro a un usuario
  * @param {String} req.headers.authorization- El token del usuario logeado (OBLIGATORIO)
- * @param {String} req.body.trade_mark - El correo del usuario a crear (OBLIGATORIO)
- * @param {Number} req.body.model - El correo del usuario a crear (OBLIGATORIO)
- * @param {String} req.body.reference - El correo del usuario a crear (OBLIGATORIO)
- * @param {Date} req.body.lastSoatDate - El name del usuario a crear (OBLIGATORIO)
- * @param {Date} req.body.lastTecDate - La contraseña del usuario a crear (OBLIGATORIO)
- * @param {String} req.body.license_plate - Fecha de nacimiento del usuario a crear (OBLIGATORIO)
+ * @param {String} req.body.trade_mark - Marca del carro a registrar (OBLIGATORIO)
+ * @param {Number} req.body.model - Modelo del carro a registrar (OBLIGATORIO)
+ * @param {String} req.body.license_plate - Placa del carro a registrar (OBLIGATORIO)
+ * @param {String} req.body.reference - Referencia del carro a registrar (OBLIGATORIO)
+ * @param {Date} req.body.lastSoatDate - Fecha de vencmiento del Soat del carro a registrar (OBLIGATORIO)
+ * @param {Date} req.body.lastTecDate - Fecha de vencimiento de la revision tecnicomecánica del carro a registrar (OBLIGATORIO)
+ * @param {Number} req.body.last5K - Kilometraje de la última revision de 5k del carro a registrar (OBLIGATORIO)
  * */
 function addCar(req, res) {
 
@@ -87,16 +88,18 @@ function addCar(req, res) {
     else if (!req.body.model) res.status(400).send('The model is obligatory');
     else if (!req.body.reference) res.status(400).send('The reference is obligatory');
     else if (!req.body.lastSoatDate) res.status(400).send('The lastSoatDate is obligatory');
-    //else if (!req.body.lastTecDate) res.status(400).send('The lastTecDate is obligatory');
     else if (!req.body.license_plate) res.status(400).send('The license_plate is obligatory');
+    //else if (!req.body.lastTecDate) res.status(400).send('The lastTecDate is obligatory');
+    //else if (!req.body.last5k) res.status(400).send('The last5k is obligatory');
     else {
         var newCar = {};
         newCar.trade_mark = req.body.trade_mark;
         newCar.model = req.body.model;
         newCar.reference = req.body.reference;
+        newCar.license_plate = req.body.license_plate;
         newCar.lastSoatDate = req.body.lastSoatDate;
         if (req.body.lastTecDate) newCar.lastTecDate = req.body.lastTecDate;
-        newCar.license_plate = req.body.license_plate;
+        if (req.body.last5k) newCar.last5K = req.body.last5k;
 
         User.findByIdAndUpdate(req.token_user._id, { $push: { cars: newCar } }, { new: true }, (err, userUpdated) => {
             if (err) res.status(500).send('Error adding car');
@@ -225,7 +228,7 @@ function modifyCar(req, res) {
     var selectedCar = req.token_user.cars.find(car => car._id == req.body.car_id)
     if (req.body.lastSoatDate) selectedCar.lastSoatDate = req.body.lastSoatDate;
     if (req.body.lastTecDate) selectedCar.lastTecDate = req.body.lastTecDate;
-    if (req.body.last5krev) selectedCar.last5krev = req.body.last5krev;
+    if (req.body.last5krev) selectedCar.last5k = req.body.last5krev;
 
     req.token_user.save((err, savedUser) => {
         if (err) res.status(500).send('Error searching user');
