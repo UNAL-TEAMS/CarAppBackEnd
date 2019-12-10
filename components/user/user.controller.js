@@ -246,7 +246,7 @@ function modifyCar(req, res) {
 function getCarImg(req, res) {
     if (!req.params.file_name) log.response(res, 400, log.ERR_CODES.MISSING_PARAMETER, 'The file_name is obligatory');
     else res.sendFile(path.resolve('./uploads/carPhotos/' + req.params.file_name), {}, (err) => {
-        if (err) log.response(res, 404, log.ERR_CODES.INVALID_PARAMETER, 'File Not Found');
+        if (err) res.status(404).send('File no Found');
     });
 }
 
@@ -259,7 +259,7 @@ function getCarImg(req, res) {
 function getUserImg(req, res) {
     if (!req.params.file_name) log.response(res, 400, log.ERR_CODES.MISSING_PARAMETER, 'The file_name is obligatory');
     else res.sendFile(path.resolve('./uploads/userPhotos/' + req.params.file_name), {}, (err) => {
-        if (err) log.response(res, 404, log.ERR_CODES.INVALID_PARAMETER, 'File Not Found');
+        if (err) res.status(404).send('File no Found');
     });
 }
 
