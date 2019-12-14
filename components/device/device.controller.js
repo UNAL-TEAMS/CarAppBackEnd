@@ -13,7 +13,7 @@ async function km(req, res) {
     //console.log(req.params)
     UserModel.findOneAndUpdate({ 'cars.license_plate': req.params.plate }, { 'cars.$.currentKilometer': Number(req.params.value) }, { new: true, useFindAndModify: true }, (err, user) => {
         if (err) error.handleError(err, 'Error searching user on device.km');
-        //console.log('Updated user: ', user);
+        console.log('Updated user: ', user);
     });
 
 }
