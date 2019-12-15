@@ -10,6 +10,7 @@ var service = Schema({
 
 var provider = Schema({
     email: String,
+    phone: Number,
     name: String,
     password: String,
     NIT: Number,

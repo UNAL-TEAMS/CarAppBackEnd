@@ -26,11 +26,13 @@ app.use(cors({ origin: true, credentials: true }));
 var userRoutes = require('./components/user/user.routes');
 var serviceRoutes = require('./services/services.routes');
 var deviceRoutes = require('./components/device/device.routes');
+var providerRoutes = require('./components/provider/provider.routes');
 
 // rutas base
 
 app.get('/', (req, res) => res.status(200).send('CarApp backend'));
 
+app.use('/provider', providerRoutes);
 app.use('/user', userRoutes);
 app.use('/service', serviceRoutes);
 app.use('/device', deviceRoutes);
