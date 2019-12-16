@@ -8,6 +8,7 @@ var imageHash = require('node-image-hash');
 var crypto = require('crypto');
 var fs = require('fs');
 var USER_TYPES = require('../../services/token.service').USER_TYPES;
+var path = require('path');
 
 
 const SERVICE_TYPE = {
@@ -106,10 +107,10 @@ function getSpecificProvider(req, res) {
             request = { 'services.Soat.has': true };
             break;
         case SERVICE_TYPE.Kilometer:
-            request = { 'services.RevTec.has': true };
-            break;
-        case SERVICE_TYPE.TecnoMecanica:
             request = { 'services.Rev5k.has': true };
+            break;
+        case SERVICE_TYPE.TecnoMecanica:RevTec
+            request = { 'services.RevTec.has': true };
             break;
         default:
             return res.status(400).send('Invalid service');
