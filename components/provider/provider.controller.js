@@ -49,7 +49,7 @@ function cryptPassword(password) {
  * @param {String} req.body.password - La contraseña del proveedor a crear (OBLIGATORIO)
  * @param {Number} req.body.NIT -Nit del proveedor a crear (OBLIGATORIO)
  * @param {Number} req.body.phone -phone del proveedor a crear (OBLIGATORIO)
- * @param {Any} req.body.service -Servicios que ofrece el proveedor (OBLIGATORIO)
+ * @param {Any} req.body.services -Servicios que ofrece el proveedor (OBLIGATORIO)
  * */
 function createProvider(req, res) {
     if (!req.body.email) res.status(400).send('The email is obligatory');
