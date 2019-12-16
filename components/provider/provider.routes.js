@@ -13,7 +13,7 @@ api.get('/own_provider', logInMiddleware, providerController.getOwnProvider);
 api.post('/modify_provider', logInMiddleware, providerController.modifyProvider);
 api.get('/provider_photo/:file_name', providerController.getProviderImg);
 api.post('/upload_avatar', logInMiddleware, type, providerController.uploadProviderImg);
-api.get('/get_specific_provider/:file_name', providerController.getSpecificProvider);
+api.get('/get_specific_provider/:service', providerController.getSpecificProvider);
 
 
 module.exports = api;
