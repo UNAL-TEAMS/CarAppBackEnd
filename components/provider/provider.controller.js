@@ -7,6 +7,14 @@ var moment = require('moment');
 var imageHash = require('node-image-hash');
 var crypto = require('crypto');
 var fs = require('fs');
+var USER_TYPES = require('../../services/token.service').USER_TYPES;
+
+
+const SERVICE_TYPE = {
+    Kilometer: '5K',
+    SOAT: 'SOAT',
+    TecnoMecanica: 'TecnoMecanica',
+};
 
 /**
  * 
@@ -18,13 +26,13 @@ function logIn(req, res) {
     else if (!req.body.password) res.status(400).send('Missing password');
     else {
         Provider.findOne({ email: req.body.email }, (err, provider) => {
-            if (err) errorHandler.mongoError(err, res, 'Error searching user in db');
+            if (err) errorHandler.mongoError(err, res, 'Error searching provider in db');
             else if (!provider) res.status(404).send('Provider no found');
             else if (provider.password != cryptPassword(req.body.password)) res.status(400).send('Bad password');
             else res.status(200).send({
                 msg: 'Correct password',
                 log_in_token: tokens.getLogInProviderToken(provider._id),
-                refresh_token: tokens.getRefreshToken(req, provider._id),
+                refresh_token: tokens.getRefreshToken(req, provider._id, USER_TYPES.PROVIDER),
             });
         });
     }
@@ -44,9 +52,6 @@ function cryptPassword(password) {
  * @param {Any} req.body.service -Servicios que ofrece el proveedor (OBLIGATORIO)
  * */
 function createProvider(req, res) {
-    var diff;
-    req.body = JSON.parse(req.body);
-    console.log(req.body);
     if (!req.body.email) res.status(400).send('The email is obligatory');
     else if (!req.body.name) res.status(400).send('The name is obligatory');
     else if (!req.body.password) res.status(400).send('The password is obligatory');
@@ -84,17 +89,35 @@ function createProvider(req, res) {
  * @param {String} req.headers.authorization- El token del proveedor logeado (OBLIGATORIO)
  * */
 function getOwnProvider(req, res) {
-    res.status(200).send(req.token_user);
+    res.status(200).send(req.token_provider);
 }
 
 
 /**
  * @author German Guerrrero
  * @description Permite obtener el proveedores segun el servicio
- * @param {String} req.headers.service- El servicio del proveedor (OBLIGATORIO)
+ * @param {String} req.params.service- El servicio del proveedor (OBLIGATORIO)
  * */
 function getSpecificProvider(req, res) {
-    res.status(200).send(req.token_user);
+    if (!req.params.service) return res.status(400).send('The service is obligatory');
+    var request;
+    switch (req.params.service) {
+        case SERVICE_TYPE.SOAT:
+            request = { 'services.Soat.has': true };
+            break;
+        case SERVICE_TYPE.Kilometer:
+            request = { 'services.RevTec.has': true };
+            break;
+        case SERVICE_TYPE.TecnoMecanica:
+            request = { 'services.Rev5k.has': true };
+            break;
+        default:
+            return req.status(400).send('Invalid service');
+    }
+    Provider.find(request, (err, providers) => {
+        if (err) return res.status(500).send('Error searching providers');
+        res.status(200).send(providers);
+    });
 }
 
 
@@ -107,11 +130,11 @@ function getSpecificProvider(req, res) {
  * @param {Number} req.body.NIT - Numero de identificacion del usuario a crear
  * */
 function modifyProvider(req, res) {
-    if (req.body.name) req.token_user.name = req.body.name;
-    if (req.body.password) req.token_user.password = req.body.password;
-    if (req.body.NIT) req.token_user.NIT = req.body.NIT;
-    if (req.body.services) req.token_user.services = req.body.services;
-    req.token_user.save((err, savedProvider) => {
+    if (req.body.name) req.token_provider.name = req.body.name;
+    if (req.body.password) req.token_provider.password = req.body.password;
+    if (req.body.NIT) req.token_provider.NIT = req.body.NIT;
+    if (req.body.services) req.token_provider.services = req.body.services;
+    req.token_provider.save((err, savedProvider) => {
         if (err) res.status(500).send('Error searching user');
         else if (!savedProvider) res.status(404).send('User not found');
         else res.status(201).send({ new_Provider: savedProvider, info: 'Success' });
@@ -131,7 +154,7 @@ function uploadProviderImg(req, res) {
         var fileName = "" + req.file.originalname;
         // FileName is hash plus time plus original file extension
         fileName = hash.hash + moment.now() + '.' + fileName.split('.').pop();
-        Provider.findOneAndUpdate({ _id: req.token_user._id }, { avatar: fileName }, (err, providerUpdated) => {
+        Provider.findOneAndUpdate({ _id: req.token_provider._id }, { avatar: fileName }, (err, providerUpdated) => {
             if (err) res.status(500).send('Error updating profile image', err);
             else if (!providerUpdated) res.status(404).send('User not found');
             else {
