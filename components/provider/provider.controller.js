@@ -127,12 +127,14 @@ function getSpecificProvider(req, res) {
  * @param {String} req.headers.authorization- El token del usuario logeado (OBLIGATORIO)
  * @param {String} req.body.name - El name del usuario a modificar
  * @param {String} req.body.password - La contraseña nueva del usuario
+ * @param {Number} req.body.phone - La contraseña nueva del usuario
  * @param {Number} req.body.NIT - Numero de identificacion del usuario a crear
  * */
 function modifyProvider(req, res) {
     if (req.body.name) req.token_provider.name = req.body.name;
     if (req.body.password) req.token_provider.password = req.body.password;
     if (req.body.NIT) req.token_provider.NIT = req.body.NIT;
+    if (req.body.phone) req.token_provider.phone = req.body.phone;
     if (req.body.services) req.token_provider.services = req.body.services;
     req.token_provider.save((err, savedProvider) => {
         if (err) res.status(500).send('Error searching user');
