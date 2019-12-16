@@ -47,7 +47,7 @@ function tokenProviderlogInVerify(req, res, next) {
     generalverify(req, res, (token) => {
         if (token.user_type != token_service.USER_TYPES.PROVIDER) res.status(400).send('Not a provider token');
         else if (token.type != token_service.TOKEN_TYPES.LOG_IN) res.status(400).send('Not a logIn token');
-        else if (moment().isAfter(token.dead_time)) res.status(400).send('Death token');
+        //else if (moment().isAfter(token.dead_time)) res.status(400).send('Death token');
         else Provider.findById(token.user_id, (err, provider) => {
             if (err) errorHandler.mongoError(err, res, 'Error on logIn');
             else {

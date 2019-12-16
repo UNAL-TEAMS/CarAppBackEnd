@@ -112,7 +112,7 @@ function getSpecificProvider(req, res) {
             request = { 'services.Rev5k.has': true };
             break;
         default:
-            return req.status(400).send('Invalid service');
+            return res.status(400).send('Invalid service');
     }
     Provider.find(request, (err, providers) => {
         if (err) return res.status(500).send('Error searching providers');
