@@ -14,7 +14,10 @@ var user = Schema({
         model: Number,
         lastSoatDate: Date,
         lastTecDate: Date,
-        last5krev: Number,
+        last5krev: {
+            type: Number,
+            default: 0,
+        },
         reference: String,
         license_plate: String,
         picture: String,
