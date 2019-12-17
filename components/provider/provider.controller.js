@@ -109,7 +109,8 @@ function getSpecificProvider(req, res) {
         case SERVICE_TYPE.Kilometer:
             request = { 'services.Rev5k.has': true };
             break;
-        case SERVICE_TYPE.TecnoMecanica:RevTec
+        case SERVICE_TYPE.TecnoMecanica:
+            RevTec
             request = { 'services.RevTec.has': true };
             break;
         default:
@@ -161,7 +162,7 @@ function uploadProviderImg(req, res) {
             if (err) res.status(500).send('Error updating profile image', err);
             else if (!providerUpdated) res.status(404).send('User not found');
             else {
-                if (providerUpdated.avatar && fs.existsSync('./uploads/providerPhotos/' + providerUpdated.avatar)) fs.unlinkSync('./uploads/userPhotos/' + providerUpdated.avatar);
+                if (providerUpdated.avatar && fs.existsSync('./uploads/providerPhotos/' + providerUpdated.avatar)) fs.unlinkSync('./uploads/providerPhotos/' + providerUpdated.avatar);
                 fs.writeFileSync('./uploads/providerPhotos/' + fileName, req.file.buffer);
                 res.status(200).send({ name_image: fileName, info: 'Image Updated' });
             }
