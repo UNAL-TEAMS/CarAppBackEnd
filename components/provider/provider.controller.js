@@ -161,7 +161,7 @@ function uploadProviderImg(req, res) {
             if (err) res.status(500).send('Error updating profile image', err);
             else if (!providerUpdated) res.status(404).send('User not found');
             else {
-                if (providerUpdated.avatar && fs.existsSync('./uploads/providerPhotos/' + providerUpdated.avatar)) fs.unlinkSync('./uploads/userPhotos/' + userUpdated.avatar);
+                if (providerUpdated.avatar && fs.existsSync('./uploads/providerPhotos/' + providerUpdated.avatar)) fs.unlinkSync('./uploads/userPhotos/' + providerUpdated.avatar);
                 fs.writeFileSync('./uploads/providerPhotos/' + fileName, req.file.buffer);
                 res.status(200).send({ name_image: fileName, info: 'Image Updated' });
             }
