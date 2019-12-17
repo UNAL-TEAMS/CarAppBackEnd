@@ -109,7 +109,7 @@ function getSpecificProvider(req, res) {
         case SERVICE_TYPE.Kilometer:
             request = { 'services.Rev5k.has': true };
             break;
-        case SERVICE_TYPE.TecnoMecanica:RevTec
+        case SERVICE_TYPE.TecnoMecanica:
             request = { 'services.RevTec.has': true };
             break;
         default:
